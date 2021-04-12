@@ -1,0 +1,57 @@
+<% layout("./layouts/boilerplate")%>
+
+<a href="/playingcards">Go to all playing cards</a>
+
+<!-- SHOW DETAILS  -->
+
+<img style="width: 600px" src="<%= playingCard.image %>" alt="">
+<h1><%= playingCard.name %></h1>
+<p>Submitted By: <%= playingCard.submittedBy.username  %> </p>
+<p><%= playingCard.price %></p>
+<p><%= playingCard.company %></p>
+<h2><%= playingCard.description %></h2>
+
+<% if(user && playingCard.submittedBy.equals(user) ) { %>
+<div>
+    <a href="/playingcards/<%=playingCard.id%>/edit">Edit <%= playingCard.name %> </a>
+</div>
+<form action="/playingcards/<%=playingCard.id%>/delete?_method=DELETE" method="POST">
+    <button>Delete Playing Card</button>
+</form>
+<% } %>
+
+<!-- REVIEW FORM -->
+<% if(user) { %>
+<h2>Leave a Review</h2>
+<form class="needs-validation" action="/playingcards/<%=playingCard.id%>/reviews" method="POST" novalidate>
+    <div>
+        <label class="form-label" for="rating">Rating</label>
+        <input class="form-range" name="review[rating]" type="range" min="0" max="5" step="1" required>
+    </div>
+    <div>
+        <label class="form-label" for="body">Review</label>
+        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="5" required></textarea>
+    </div>
+    <button>Submit</button>
+</form>
+<% } %>
+
+<div>
+    <h3>Reviews</h3>
+    <% for (let reviews of playingCard.reviews) {%>
+    <div>
+        <p>Rating: <%=reviews.rating%></p>
+        <p>Author: <%= reviews.author.username %></p>
+        <p>Reviews: <%=reviews.body%></p>
+
+        <% if(user && reviews.author.equals(user) ) { %>
+
+        <form action="/playingcards/<%=playingCard.id%>/reviews/<%=reviews.id%>?_method=delete" method="POST">
+            <button>Delete</button>
+        </form>
+
+        <% } %>
+
+    </div>
+    <%}%>
+</div>

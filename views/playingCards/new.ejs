@@ -1,0 +1,34 @@
+<% layout("./layouts/boilerplate")%>
+<!-- <div>
+    <a href="/playingcards">Go back to all the playing cards</a>
+</div> -->
+<h1 class="new-title text-center">Create a new Playing Card</h1>
+<div class="col-6 offset-3">
+    <form class="needs-validation" action="/playingcards" method="POST" novalidate>
+        <div class="mb-3">
+            <label class="form-label" for="name">Playing Card Name</label>
+            <input class="form-control" type="text" id="name" name="playingCard[name]" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="description">Description</label>
+            <input class="form-control" type="text" id="description" name="playingCard[description]" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="price">Price</label>
+            <select class="form-control" name="playingCard[price]" id="price">
+                <option value="$">$</option>
+                <option value="$$">$$</option>
+                <option value="$$$">$$$</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="company">Company</label>
+            <input class="form-control" type="text" id="company" name="playingCard[company]" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="image">Choose Image</label>
+            <input class="form-control" type="text" id="image" name="playingCard[image]" required>
+        </div>
+        <button>Submit</button>
+    </form>
+</div>
