@@ -26,9 +26,12 @@ const MongoStore = require('connect-mongo');
 
 //mongodb://localhost:27017/playingCardCapstone
 
+const url =
+	process.env.DB_STRING || 'mongodb://localhost:27017/playingCardCapstone';
+
 // Mongoose Connecting to Mongo
 mongoose
-	.connect(process.env.DB_STRING, {
+	.connect(url, {
 		useNewUrlParser: true,
 		useCreateIndex: true,
 		useUnifiedTopology: true,
@@ -53,11 +56,13 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, '/public')));
 
+const secret = process.env.SECRET || 'drake';
+
 const store = MongoStore.create({
-	mongoUrl: process.env.DB_STRING,
+	mongoUrl: url,
 	touchAfter: 24 * 60 * 60,
 	crypto: {
-		secret: 'drake',
+		secret,
 	},
 });
 
@@ -68,7 +73,7 @@ store.on('error', (e) => {
 
 const sessionConfig = {
 	store,
-	secret: 'drake',
+	secret,
 	resave: false,
 	saveUninitialized: true,
 	cookie: {
@@ -120,6 +125,8 @@ app.use((err, req, res, next) => {
 	res.status(status).render('error', { err });
 });
 
-app.listen(3000, () => {
-	console.log('Listening on port 3000');
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+	console.log(`Listening on port ${port}`);
 });
